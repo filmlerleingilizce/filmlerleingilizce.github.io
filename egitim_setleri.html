@@ -166,6 +166,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  touch-action: pan-y; /* yatay scroll iptal */
 }
 
 @keyframes glow {
@@ -269,10 +270,10 @@ body {
   <div class="overlay"></div>
 
   <div class="content">
-    <div class="slider" id="sliderContainer">
+    <div class="slider">
       <div class="arrow" onclick="prevSet()">❮</div>
 
-      <div class="glass-card">
+      <div class="glass-card" id="glassCard">
         <h2 id="setTitle"></h2>
 
         <div class="image-box">
@@ -344,27 +345,27 @@ setInterval(() => {
 }, 2500);
 
 /* ================= MOBILE TOUCH SWIPE ================= */
-let touchStartX = 0;
-let touchEndX = 0;
+const glassCard = document.getElementById("glassCard");
+let startX = 0;
+let endX = 0;
 
-const sliderContainer = document.getElementById("sliderContainer");
-
-sliderContainer.addEventListener("touchstart", e => {
-  touchStartX = e.changedTouches[0].screenX;
+glassCard.addEventListener("touchstart", e => {
+  startX = e.touches[0].clientX;
 });
 
-sliderContainer.addEventListener("touchend", e => {
-  touchEndX = e.changedTouches[0].screenX;
-  handleSwipe();
+glassCard.addEventListener("touchmove", e => {
+  endX = e.touches[0].clientX;
 });
 
-function handleSwipe() {
-  const deltaX = touchEndX - touchStartX;
-  if(Math.abs(deltaX) > 50) { // yeterli mesafe
-    if(deltaX > 0) prevSet(); // sağa kaydır → önceki
-    else nextSet();           // sola kaydır → sonraki
+glassCard.addEventListener("touchend", e => {
+  const delta = endX - startX;
+  if(Math.abs(delta) > 50){
+    if(delta > 0) prevSet();
+    else nextSet();
   }
-}
+  startX = 0;
+  endX = 0;
+});
 </script>
 
 </body>
