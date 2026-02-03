@@ -205,7 +205,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
   z-index: 2;
   transition: transform 0.35s ease;
 }
@@ -219,6 +218,29 @@ body {
 
 .image-box .clickable:hover img {
   transform: scale(1.06);
+}
+
+/* ---------------- MOBILE ADD BUTTON ---------------- */
+#addBtn {
+  display: none; /* default gizli */
+  margin-top: 15px;
+  padding: 8px 12px;
+  font-size: 0.65rem;
+  color: #00f0ff;
+  background: rgba(0,0,0,0.7);
+  border: 1px solid #00f0ff;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#addBtn:hover {
+  background: #00f0ff;
+  color: #000;
+}
+
+@media (max-width: 768px) {
+  #addBtn { display: block; }
 }
 
 /* ---------------- FOOTER ---------------- */
@@ -282,6 +304,9 @@ body {
             <img id="charImg" src="" alt="">
           </div>
         </div>
+
+        <!-- MOBİL SEPETE EKLE BUTONU -->
+        <button id="addBtn">Sepete Ekle</button>
       </div>
 
       <div class="arrow" onclick="nextSet()">❯</div>
@@ -318,6 +343,17 @@ function renderSet() {
   wallEl.style.backgroundImage = `url('${s.wall}')`;
   charEl.src = s.char;
   heroBg.style.backgroundImage = `url('${s.wall}')`;
+
+  // Tıklama sadece PC için
+  if(window.innerWidth > 768){
+    charLink.style.cursor = "pointer";
+    charLink.onclick = () => {
+      alert(`${s.title} sayfası yakında gelecek 🚀`);
+    };
+  } else {
+    charLink.style.cursor = "default";
+    charLink.onclick = null; // mobilde tıklamayı iptal et
+  }
 }
 
 function nextSet() { current = (current + 1) % sets.length; renderSet(); }
@@ -340,35 +376,24 @@ setInterval(() => {
   titleIndex = (titleIndex + 1) % titles.length;
 }, 2500);
 
-/* ================= MOBILE TOUCH SWIPE & CLICK ================= */
+/* ================= MOBILE TOUCH SWIPE ================= */
 const glassCardEl = document.getElementById("glassCard");
 let startX = 0;
 let endX = 0;
-let swiped = false;
 
-glassCardEl.addEventListener("touchstart", e => {
-  startX = e.touches[0].clientX;
-  swiped = false;
-});
-
-glassCardEl.addEventListener("touchmove", e => {
-  endX = e.touches[0].clientX;
-});
-
+glassCardEl.addEventListener("touchstart", e => { startX = e.touches[0].clientX; });
+glassCardEl.addEventListener("touchmove", e => { endX = e.touches[0].clientX; });
 glassCardEl.addEventListener("touchend", e => {
   const delta = endX - startX;
   if(Math.abs(delta) > 50){
-    swiped = true;
     if(delta > 0) prevSet();
     else nextSet();
   }
-  startX = 0;
-  endX = 0;
 });
 
-// PNG click doğru set için
-charLink.onclick = (e) => {
-  if(swiped) return; // swipe yaptıysak click iptal
+/* ================= MOBILE SEPETE EKLE BUTONU ================= */
+const addBtn = document.getElementById("addBtn");
+addBtn.onclick = () => {
   const s = sets[current];
   alert(`${s.title} sayfası yakında gelecek 🚀`);
 };
