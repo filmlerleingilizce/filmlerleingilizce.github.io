@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Filmlerle İngilizce</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #000;
+  overflow: hidden;
+  font-family: 'Press Start 2P', cursive;
+}
+
+/* ================= NAVBAR ================= */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 60px;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.nav-links {
+  display: flex;
+  gap: 28px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #00f0ff;
+  font-size: 0.6rem;
+  text-shadow: 0 0 8px #00f0ff;
+  transition: color 0.4s ease, text-shadow 0.4s ease;
+  animation: neonPulse 3s ease-in-out infinite;
+}
+
+.nav-links a:hover {
+  color: #ff3fd8;
+  text-shadow: 0 0 12px #ff3fd8;
+}
+
+/* HAMBURGER */
+.hamburger {
+  position: absolute;
+  right: 24px;
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  width: 24px;
+  height: 3px;
+  background: #00f0ff;
+  box-shadow: 0 0 8px #00f0ff;
+}
+
+/* MOBILE MENU */
+.mobile-menu {
+  position: fixed;
+  top: 60px;
+  right: -100%;
+  width: 70%;
+  height: calc(100vh - 60px);
+  background: rgba(0,0,0,0.9);
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  gap: 24px;
+  transition: right 0.4s ease;
+  z-index: 9;
+}
+
+.mobile-menu a {
+  color: #00f0ff;
+  font-size: 0.7rem;
+  text-decoration: none;
+  text-shadow: 0 0 10px #00f0ff;
+  animation: neonPulse 3s ease-in-out infinite;
+}
+
+.mobile-menu a:hover {
+  color: #ff3fd8;
+  text-shadow: 0 0 12px #ff3fd8;
+}
+
+.mobile-menu.active {
+  right: 0;
+}
+
+/* ================= HERO ================= */
+.hero {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.25);
+  opacity: 0;
+  transition: opacity 2s ease-in-out, transform 10s linear;
+  z-index: 1;
+}
+
+.bg.active {
+  opacity: 1;
+}
+
+.fg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transform: scale(1);
+  opacity: 0;
+  transition: opacity 2s ease-in-out, transform 11s linear;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.fg.active {
+  opacity: 1;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 3;
+}
+
+.title {
+  position: relative;
+  z-index: 4;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.title h1 {
+  color: #00f0ff;
+  font-size: clamp(1.4rem, 4vw, 3rem);
+  text-shadow: 0 0 20px #00f0ff;
+  animation: neonPulse 3s ease-in-out infinite;
+}
+
+/* ================= FOOTER ================= */
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 40px;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.footer span {
+  color: #00f0ff;
+  font-size: 0.55rem;
+  text-shadow: 0 0 10px #00f0ff;
+  animation: neonPulse 3s ease-in-out infinite;
+}
+
+/* ================= ANIMATION ================= */
+@keyframes neonPulse {
+  0%, 100% {
+    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+    opacity: 0.9;
+  }
+  50% {
+    text-shadow: 0 0 25px currentColor, 0 0 40px currentColor;
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+  <div class="nav-links">
+    <a href="index.html">Anasayfa</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
+    <a href="egitim_setleri.html">Eğitim Setleri</a>
+    <a href="iletisim.html">İletişim</a>
+    <a href="oneri_kutusu.html">Öneri Kutusu</a>
+  </div>
+
+  <div class="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</div>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Anasayfa</a>
+  <a href="hakkimizda.html">Hakkımızda</a>
+  <a href="egitim_setleri.html">Eğitim Setleri</a>
+  <a href="iletisim.html">İletişim</a>
+  <a href="oneri_kutusu.html">Öneri Kutusu</a>
+</div>
+
+<div class="hero">
+  <div class="bg active" id="bg1"></div>
+  <div class="bg" id="bg2"></div>
+
+  <div class="fg active" id="fg1"></div>
+  <div class="fg" id="fg2"></div>
+
+  <div class="overlay"></div>
+
+  <div class="title">
+    <h1>Filmlerle<br>İngilizce</h1>
+  </div>
+</div>
+
+<div class="footer">
+  <span>© 2026 — Filmlerle İngilizce</span>
+</div>
+
+<script>
+function toggleMenu() {
+  document.getElementById("mobileMenu").classList.toggle("active");
+}
+
+/* ================= TAB TITLE MAGIC ================= */
+const titles = [
+  "🎬 Filmlerle İngilizce",
+  "👀 Buraya bak!",
+  "📩 1 Mesajınız Var",
+  "🍿 Filmle İngilizce Öğren",
+  "🚀 Kaçırma!"
+];
+
+let titleIndex = 0;
+let titleInterval;
+
+function startTitleAnimation() {
+  titleInterval = setInterval(() => {
+    document.title = titles[titleIndex];
+    titleIndex = (titleIndex + 1) % titles.length;
+  }, 1500);
+}
+
+function stopTitleAnimation() {
+  clearInterval(titleInterval);
+  document.title = "Filmlerle İngilizce";
+}
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    startTitleAnimation();
+  } else {
+    stopTitleAnimation();
+  }
+});
+
+/* ================= SLIDER ================= */
+const slides = [
+  { bg: "Mario_Duvar.jpg", fg: "Mario.png" },
+  { bg: "Harry_Duvar.jpg", fg: "Harry.png" },
+  { bg: "Shrek_Duvar.jpg", fg: "Shrek.png" }
+];
+
+const bg1 = document.getElementById("bg1");
+const bg2 = document.getElementById("bg2");
+const fg1 = document.getElementById("fg1");
+const fg2 = document.getElementById("fg2");
+
+let index = 0;
+let showA = true;
+
+bg1.style.backgroundImage = `url('${slides[0].bg}')`;
+fg1.style.backgroundImage = `url('${slides[0].fg}')`;
+
+requestAnimationFrame(() => {
+  requestAnimationFrame(() => {
+    bg1.style.transform = "scale(1)";
+    fg1.style.transform = "scale(1.2)";
+  });
+});
+
+setInterval(() => {
+  index = (index + 1) % slides.length;
+
+  const bgActive = showA ? bg1 : bg2;
+  const bgNext = showA ? bg2 : bg1;
+  const fgActive = showA ? fg1 : fg2;
+  const fgNext = showA ? fg2 : fg1;
+
+  bgNext.style.transition = "none";
+  bgNext.style.transform = "scale(1.25)";
+  bgNext.style.backgroundImage = `url('${slides[index].bg}')`;
+  bgNext.style.opacity = "1";
+  bgNext.offsetHeight;
+  bgNext.style.transition = "opacity 2s ease-in-out, transform 10s linear";
+  bgNext.style.transform = "scale(1)";
+  bgActive.style.opacity = "0";
+
+  fgNext.style.transition = "none";
+  fgNext.style.transform = "scale(1)";
+  fgNext.style.backgroundImage = `url('${slides[index].fg}')`;
+  fgNext.style.opacity = "1";
+  fgNext.offsetHeight;
+  fgNext.style.transition = "opacity 2s ease-in-out, transform 11s linear";
+  fgNext.style.transform = "scale(1.1)";
+  fgActive.style.opacity = "0";
+
+  showA = !showA;
+}, 10000);
+</script>
+
+</body>
+</html>

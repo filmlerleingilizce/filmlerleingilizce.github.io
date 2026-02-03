@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Öneri Kutusu ✍️ | Filmlerle İngilizce</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #000;
+  overflow: hidden;
+  font-family: 'Press Start 2P', cursive;
+}
+
+/* ---------------- NAVBAR ---------------- */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 60px;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(8px);
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px;
+}
+
+.nav-links a {
+  color: #00f0ff;
+  text-decoration: none;
+  font-size: 0.7rem;
+  transition: color 0.4s ease, text-shadow 0.4s ease;
+}
+
+.nav-links a:hover {
+  color: #ff4fd8;
+  text-shadow: 0 0 8px #ff4fd8;
+}
+
+.hamburger {
+  display: none;
+  position: absolute;
+  right: 20px;
+  font-size: 1.4rem;
+  color: #00f0ff;
+  cursor: pointer;
+}
+
+.mobile-menu {
+  position: fixed;
+  top: 60px;
+  right: -100%;
+  width: 70%;
+  height: calc(100% - 60px);
+  background: rgba(0,0,0,0.9);
+  backdrop-filter: blur(10px);
+  transition: right 0.4s ease;
+  z-index: 9;
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  gap: 20px;
+}
+
+.mobile-menu a {
+  color: #00f0ff;
+  text-decoration: none;
+  font-size: 0.75rem;
+}
+
+.mobile-menu a:hover {
+  color: #ff4fd8;
+}
+
+.mobile-menu.active {
+  right: 0;
+}
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hamburger { display: block; }
+}
+
+/* ---------------- HERO ---------------- */
+.hero {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.bg, .fg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 2s ease-in-out, transform 10s linear;
+}
+
+.bg { transform: scale(1.25); z-index: 1; }
+.fg { transform: scale(1); z-index: 2; pointer-events: none; }
+
+.bg.active, .fg.active { opacity: 1; }
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 3;
+}
+
+/* ---------------- GLASSMORPHISM ---------------- */
+.content {
+  position: relative;
+  z-index: 4;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+}
+
+.text-box {
+  width: 90%;
+  max-width: 700px;
+  height: 70%;
+  padding: 20px;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(6px);
+  border-radius: 16px;
+  overflow-y: auto;
+  animation: neonBreath 4s ease-in-out infinite;
+}
+
+.text-box::-webkit-scrollbar {
+  width: 8px;
+}
+
+.text-box::-webkit-scrollbar-thumb {
+  background: rgba(0,240,255,0.5);
+  border-radius: 4px;
+}
+
+.text-box p {
+  font-size: clamp(0.6rem, 2.2vw, 0.85rem);
+  line-height: 2;
+  color: #00f0ff;
+  text-align: center;
+}
+
+.text-box input, .text-box textarea {
+  width: 90%;
+  margin: 10px auto;
+  display: block;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.7rem;
+}
+
+.text-box textarea {
+  height: 120px;
+  resize: none;
+}
+
+.text-box button {
+  background: #00f0ff;
+  color: #000;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  margin: 10px auto;
+  cursor: pointer;
+  display: block;
+  transition: all 0.3s ease;
+}
+
+.text-box button:hover {
+  background: #ff4fd8;
+  color: #fff;
+}
+
+.text-box a {
+  color: #ff4fd8;
+  text-decoration: none;
+}
+
+.text-box a:hover {
+  text-decoration: underline;
+}
+
+@keyframes neonBreath {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(0,240,255,0.4);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(0,240,255,0.8);
+  }
+}
+
+/* ---------------- FOOTER ---------------- */
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 40px;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer span {
+  font-size: 0.55rem;
+  color: #00f0ff;
+  animation: neonBreath 4s ease-in-out infinite;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="nav-links">
+    <a href="index.html">Anasayfa</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
+    <a href="egitim_setleri.html">Eğitim Setleri</a>
+    <a href="iletisim.html">İletişim</a>
+    <a href="oneri_kutusu.html">Öneri Kutusu</a>
+  </div>
+  <div class="hamburger" onclick="toggleMenu()">☰</div>
+</div>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Anasayfa</a>
+  <a href="hakkimizda.html">Hakkımızda</a>
+  <a href="egitim-setleri.html">Eğitim Setleri</a>
+  <a href="iletisim.html">İletişim</a>
+  <a href="oneri_kutusu.html">Öneri Kutusu</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+
+  <div class="bg active" id="bg1"></div>
+  <div class="bg" id="bg2"></div>
+
+  <div class="fg active" id="fg1"></div>
+  <div class="fg" id="fg2"></div>
+
+  <div class="overlay"></div>
+
+  <div class="content">
+    <div class="text-box">
+      <p>📬 <strong>Bize Önerinizi Gönderin!</strong></p>
+
+      <form onsubmit="sendSuggestion(event)">
+        <input type="text" name="name" placeholder="Adınız" required>
+        <input type="email" name="email" placeholder="E-mail Adresiniz" required>
+        <textarea name="suggestion" placeholder="Öneriniz..." required></textarea>
+        <button type="submit">Gönder</button>
+      </form>
+
+      <p>✉️ Veya e-mail göndermek isterseniz: 
+        <a href="mailto:cineshotenglish@gmail.com">cineshotenglish@gmail.com</a>
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <span>© 2026 · Filmlerle İngilizce</span>
+</div>
+
+<script>
+function toggleMenu() {
+  document.getElementById("mobileMenu").classList.toggle("active");
+}
+
+function sendSuggestion(e){
+  e.preventDefault();
+  alert("Teşekkürler! Öneriniz alındı ✅");
+  e.target.reset();
+}
+
+const slides = [
+  { bg: "Mario_Duvar.jpg", fg: "Mario.png" },
+  { bg: "Harry_Duvar.jpg", fg: "Harry.png" },
+  { bg: "Shrek_Duvar.jpg", fg: "Shrek.png" }
+];
+
+const bg1 = document.getElementById("bg1");
+const bg2 = document.getElementById("bg2");
+const fg1 = document.getElementById("fg1");
+const fg2 = document.getElementById("fg2");
+
+let index = 0;
+let showA = true;
+
+bg1.style.backgroundImage = `url('${slides[0].bg}')`;
+fg1.style.backgroundImage = `url('${slides[0].fg}')`;
+
+requestAnimationFrame(() => {
+  bg1.style.transform = "scale(1)";
+  fg1.style.transform = "scale(1.15)";
+});
+
+setInterval(() => {
+  index = (index + 1) % slides.length;
+
+  const bgA = showA ? bg1 : bg2;
+  const bgB = showA ? bg2 : bg1;
+  const fgA = showA ? fg1 : fg2;
+  const fgB = showA ? fg2 : fg1;
+
+  bgB.style.transition = "none";
+  bgB.style.transform = "scale(1.25)";
+  bgB.style.backgroundImage = `url('${slides[index].bg}')`;
+  bgB.style.opacity = "1";
+  bgB.offsetHeight;
+  bgB.style.transition = "opacity 2s ease-in-out, transform 10s linear";
+  bgB.style.transform = "scale(1)";
+  bgA.style.opacity = "0";
+
+  fgB.style.transition = "none";
+  fgB.style.transform = "scale(1)";
+  fgB.style.backgroundImage = `url('${slides[index].fg}')`;
+  fgB.style.opacity = "1";
+  fgB.offsetHeight;
+  fgB.style.transition = "opacity 2s ease-in-out, transform 11s linear";
+  fgB.style.transform = "scale(1.1)";
+  fgA.style.opacity = "0";
+
+  showA = !showA;
+}, 10000);
+
+const titles = [
+  "✍️ Öneri Kutusu",
+  "👀 1 Mesajınız Var!",
+  "🎬 Filmlerle İngilizce",
+  "🧠 İngilizce Beynine Yerleşiyor…"
+];
+
+let titleIndex = 0;
+
+setInterval(() => {
+  document.title = titles[titleIndex];
+  titleIndex = (titleIndex + 1) % titles.length;
+}, 2500);
+</script>
+
+</body>
+</html>
