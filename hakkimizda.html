@@ -18,7 +18,7 @@
 body {
   background: #000;
   font-family: 'Press Start 2P', cursive;
-  /* overflow: hidden; kaldırıldı */
+  overflow-x: hidden; /* sadece yatay scroll engellendi */
 }
 
 /* ---------------- NAVBAR ---------------- */
@@ -99,7 +99,7 @@ body {
 /* ---------------- HERO ---------------- */
 .hero {
   position: relative;
-  width: 100vw;
+  width: 100%; /* 100vw yerine 100% */
   min-height: 100vh; 
   overflow: visible;  
 }
