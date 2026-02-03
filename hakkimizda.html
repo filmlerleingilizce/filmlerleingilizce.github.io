@@ -17,8 +17,8 @@
 
 body {
   background: #000;
-  overflow: hidden;
   font-family: 'Press Start 2P', cursive;
+  /* overflow: hidden; kaldırıldı */
 }
 
 /* ---------------- NAVBAR ---------------- */
@@ -100,8 +100,8 @@ body {
 .hero {
   position: relative;
   width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh; /* height yerine min-height */
+  overflow: visible;  /* overflow: hidden kaldırıldı */
 }
 
 .bg, .fg {
@@ -129,11 +129,12 @@ body {
 .content {
   position: relative;
   z-index: 4;
-  height: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 30px;
+  min-height: 100vh; /* height yerine min-height */
 }
 
 .text-box {
@@ -179,6 +180,14 @@ body {
   font-size: 0.55rem;
   color: #00f0ff;
   animation: neonBreath 4s ease-in-out infinite;
+}
+
+/* ---------------- MOBILE SCROLL DÜZELTME ---------------- */
+@media (max-width: 768px) {
+  .content {
+    justify-content: flex-start; /* üstten başlasın */
+    padding-top: 100px;          /* navbar boşluğu */
+  }
 }
 </style>
 </head>
