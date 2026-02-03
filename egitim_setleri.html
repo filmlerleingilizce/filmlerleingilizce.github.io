@@ -318,10 +318,6 @@ function renderSet() {
   wallEl.style.backgroundImage = `url('${s.wall}')`;
   charEl.src = s.char;
   heroBg.style.backgroundImage = `url('${s.wall}')`;
-
-  charLink.onclick = () => {
-    alert(`${s.title} sayfası yakında gelecek 🚀`);
-  };
 }
 
 function nextSet() { current = (current + 1) % sets.length; renderSet(); }
@@ -344,28 +340,38 @@ setInterval(() => {
   titleIndex = (titleIndex + 1) % titles.length;
 }, 2500);
 
-/* ================= MOBILE TOUCH SWIPE ================= */
-const glassCard = document.getElementById("glassCard");
+/* ================= MOBILE TOUCH SWIPE & CLICK ================= */
+const glassCardEl = document.getElementById("glassCard");
 let startX = 0;
 let endX = 0;
+let swiped = false;
 
-glassCard.addEventListener("touchstart", e => {
+glassCardEl.addEventListener("touchstart", e => {
   startX = e.touches[0].clientX;
+  swiped = false;
 });
 
-glassCard.addEventListener("touchmove", e => {
+glassCardEl.addEventListener("touchmove", e => {
   endX = e.touches[0].clientX;
 });
 
-glassCard.addEventListener("touchend", e => {
+glassCardEl.addEventListener("touchend", e => {
   const delta = endX - startX;
   if(Math.abs(delta) > 50){
+    swiped = true;
     if(delta > 0) prevSet();
     else nextSet();
   }
   startX = 0;
   endX = 0;
 });
+
+// PNG click doğru set için
+charLink.onclick = (e) => {
+  if(swiped) return; // swipe yaptıysak click iptal
+  const s = sets[current];
+  alert(`${s.title} sayfası yakında gelecek 🚀`);
+};
 </script>
 
 </body>
