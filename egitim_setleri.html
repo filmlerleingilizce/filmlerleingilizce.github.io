@@ -17,8 +17,8 @@
 
 body {
   background: #000;
-  overflow: hidden;
   font-family: 'Press Start 2P', cursive;
+  overflow: hidden;
 }
 
 /* ---------------- NAVBAR ---------------- */
@@ -269,7 +269,7 @@ body {
   <div class="overlay"></div>
 
   <div class="content">
-    <div class="slider">
+    <div class="slider" id="sliderContainer">
       <div class="arrow" onclick="prevSet()">❮</div>
 
       <div class="glass-card">
@@ -342,6 +342,29 @@ setInterval(() => {
   document.title = titles[titleIndex];
   titleIndex = (titleIndex + 1) % titles.length;
 }, 2500);
+
+/* ================= MOBILE TOUCH SWIPE ================= */
+let touchStartX = 0;
+let touchEndX = 0;
+
+const sliderContainer = document.getElementById("sliderContainer");
+
+sliderContainer.addEventListener("touchstart", e => {
+  touchStartX = e.changedTouches[0].screenX;
+});
+
+sliderContainer.addEventListener("touchend", e => {
+  touchEndX = e.changedTouches[0].screenX;
+  handleSwipe();
+});
+
+function handleSwipe() {
+  const deltaX = touchEndX - touchStartX;
+  if(Math.abs(deltaX) > 50) { // yeterli mesafe
+    if(deltaX > 0) prevSet(); // sağa kaydır → önceki
+    else nextSet();           // sola kaydır → sonraki
+  }
+}
 </script>
 
 </body>
