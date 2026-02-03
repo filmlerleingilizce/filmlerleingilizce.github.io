@@ -27,8 +27,8 @@ body { background:#000; overflow:hidden; font-family:'Press Start 2P', cursive; 
 .hamburger { display:none; position:absolute; right:20px; font-size:1.4rem; color:#00f0ff; cursor:pointer; }
 .mobile-menu {
   position:fixed; top:60px; right:-100%; width:70%; height:calc(100%-60px);
-  background:rgba(0,0,0,0.9); backdrop-filter:blur(10px);
-  transition:right 0.4s ease; z-index:9; display:flex; flex-direction:column;
+  background:rgba(0,0,0,0.95); backdrop-filter:blur(10px);
+  transition:right 0.4s ease; z-index:9999; display:flex; flex-direction:column;
   padding:30px; gap:20px;
 }
 .mobile-menu a { color:#00f0ff; text-decoration:none; font-size:0.75rem; }
@@ -38,11 +38,11 @@ body { background:#000; overflow:hidden; font-family:'Press Start 2P', cursive; 
 
 /* ---------------- HERO ---------------- */
 .hero { position:relative; width:100vw; height:100vh; overflow:hidden; }
-.bg, .fg { position:absolute; inset:0; background-size:cover; background-position:center; opacity:0; transition: opacity 2s ease-in-out, transform 10s linear; }
+.bg, .fg { position:absolute; inset:0; background-size:cover; background-position:center; opacity:0; transition: opacity 2s ease-in-out, transform 10s linear; pointer-events:none; }
 .bg { transform:scale(1.25); z-index:1; }
-.fg { transform:scale(1); z-index:2; pointer-events:none; }
+.fg { transform:scale(1); z-index:2; }
 .bg.active, .fg.active { opacity:1; }
-.overlay { position:absolute; inset:0; background:rgba(0,0,0,0.6); z-index:3; }
+.overlay { position:absolute; inset:0; background:rgba(0,0,0,0.6); z-index:3; pointer-events:none; }
 
 /* ---------------- GLASSMORPHISM ---------------- */
 .content { position:relative; z-index:4; height:100%; display:flex; align-items:center; justify-content:center; padding:30px; }
@@ -50,6 +50,7 @@ body { background:#000; overflow:hidden; font-family:'Press Start 2P', cursive; 
   width:90%; max-width:700px; height:85%; padding:20px;
   background:rgba(0,0,0,0.55); backdrop-filter:blur(6px); border-radius:16px;
   overflow-y:auto; animation: neonBreath 4s ease-in-out infinite;
+  pointer-events:auto; /* artık mobilde tıklanabilir */
 }
 .text-box::-webkit-scrollbar { width:8px; }
 .text-box::-webkit-scrollbar-thumb { background: rgba(0,240,255,0.5); border-radius:4px; }
@@ -133,10 +134,7 @@ let index=0, showA=true;
 bg1.style.backgroundImage = `url('${slides[0].bg}')`;
 fg1.style.backgroundImage = `url('${slides[0].fg}')`;
 
-requestAnimationFrame(()=>{
-  bg1.style.transform="scale(1)";
-  fg1.style.transform="scale(1.15)";
-});
+requestAnimationFrame(()=>{ bg1.style.transform="scale(1)"; fg1.style.transform="scale(1.15)"; });
 
 setInterval(()=>{
   index=(index+1)%slides.length;
@@ -161,13 +159,7 @@ setInterval(()=>{
 },10000);
 
 /* ================= TAB TITLE ================= */
-const titles=[
-  "📬 Bize Ulaşın!",
-  "👀 1 Mesajınız Var!",
-  "🎬 Filmlerle İngilizce",
-  "🧠 İngilizce Beynine Yerleşiyor…",
-  "😎 Konuşmaya Hazır mısın?"
-];
+const titles=[ "📬 Bize Ulaşın!", "👀 1 Mesajınız Var!", "🎬 Filmlerle İngilizce", "🧠 İngilizce Beynine Yerleşiyor…", "😎 Konuşmaya Hazır mısın?" ];
 let titleIndex=0;
 setInterval(()=>{ document.title=titles[titleIndex]; titleIndex=(titleIndex+1)%titles.length; },2500);
 </script>
