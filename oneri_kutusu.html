@@ -37,33 +37,51 @@ body { background:#000; overflow:hidden; font-family:'Press Start 2P', cursive; 
 @media (max-width:768px) { .nav-links{display:none;} .hamburger{display:block;} }
 
 /* ---------------- HERO ---------------- */
-.hero { position:relative; width:100vw; height:100vh; overflow:hidden; }
+.hero { position: relative; width:100vw; height:100vh; overflow:hidden; }
 .bg, .fg { position:absolute; inset:0; background-size:cover; background-position:center; opacity:0; transition: opacity 2s ease-in-out, transform 10s linear; }
 .bg { transform:scale(1.25); z-index:1; }
-.bg.active { opacity:1; }
-.overlay { position:absolute; inset:0; background:rgba(0,0,0,0.6); z-index:2; }
+.fg { transform:scale(1); z-index:2; pointer-events:none; }
+.bg.active, .fg.active { opacity:1; }
+.overlay { position:absolute; inset:0; background:rgba(0,0,0,0.6); z-index:3; }
 
 /* ---------------- GLASSMORPHISM ---------------- */
-.content {
-  position:relative; z-index:3; height:100%;
-  display:flex; align-items:center; justify-content:center; padding:30px;
-}
+.content { position:relative; z-index:4; height:100%; display:flex; align-items:center; justify-content:center; padding:30px; }
 .text-box {
-  width:90%; max-width:700px; height:70%;
-  padding:20px; background:rgba(0,0,0,0.55); backdrop-filter:blur(6px); border-radius:16px;
-  overflow-y:auto; animation: neonBreath 4s ease-in-out infinite;
+  width: 90%;
+  max-width:700px;
+  height: 70%;
+  padding: 20px;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(6px);
+  border-radius: 16px;
+  overflow-y: auto;
+  animation: neonBreath 4s ease-in-out infinite;
 }
 .text-box::-webkit-scrollbar { width:8px; }
 .text-box::-webkit-scrollbar-thumb { background: rgba(0,240,255,0.5); border-radius:4px; }
 .text-box p { font-size:clamp(0.6rem,2.2vw,0.85rem); line-height:2; color:#00f0ff; text-align:center; }
 .text-box input, .text-box textarea {
-  width:90%; margin:10px auto; display:block; padding:8px; border-radius:8px; border:none;
-  font-family:'Press Start 2P', cursive; font-size:0.7rem;
+  width: 90%;
+  margin: 10px auto;
+  display: block;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  font-family:'Press Start 2P', cursive;
+  font-size:0.7rem;
 }
 .text-box textarea { height:120px; resize:none; }
 .text-box button {
-  background:#00f0ff; color:#000; font-weight:bold; border:none; border-radius:8px;
-  padding:10px 20px; margin:10px auto; cursor:pointer; display:block; transition:all 0.3s ease;
+  background: #00f0ff;
+  color: #000;
+  font-weight: bold;
+  border: none;
+  border-radius:8px;
+  padding:10px 20px;
+  margin:10px auto;
+  cursor:pointer;
+  display:block;
+  transition: all 0.3s ease;
 }
 .text-box button:hover { background:#ff4fd8; color:#fff; }
 .text-box a { color:#ff4fd8; text-decoration:none; }
@@ -75,11 +93,7 @@ body { background:#000; overflow:hidden; font-family:'Press Start 2P', cursive; 
 }
 
 /* ---------------- FOOTER ---------------- */
-.footer {
-  position:fixed; bottom:0; width:100%; height:40px;
-  background:rgba(0,0,0,0.6); backdrop-filter:blur(6px);
-  z-index:10; display:flex; justify-content:center; align-items:center;
-}
+.footer { position:fixed; bottom:0; width:100%; height:40px; background:rgba(0,0,0,0.6); backdrop-filter:blur(6px); z-index:10; display:flex; justify-content:center; align-items:center; }
 .footer span { font-size:0.55rem; color:#00f0ff; animation:neonBreath 4s ease-in-out infinite; }
 </style>
 </head>
@@ -110,17 +124,18 @@ body { background:#000; overflow:hidden; font-family:'Press Start 2P', cursive; 
 <div class="hero">
   <div class="bg active" id="bg1"></div>
   <div class="bg" id="bg2"></div>
+  <div class="fg active" id="fg1"></div>
+  <div class="fg" id="fg2"></div>
   <div class="overlay"></div>
 
   <div class="content">
     <div class="text-box">
       <p>📬 <strong>Bize Önerinizi Gönderin!</strong></p>
 
-      <!-- FORMSPREE FORM -->
-      <form action="https://formspree.io/f/xaqbrbjb" method="POST">
+      <form id="suggestionForm" action="https://formspree.io/f/xaqbrbjb" method="POST">
         <input type="text" name="name" placeholder="Adınız" required>
         <input type="email" name="email" placeholder="E-mail Adresiniz" required>
-        <textarea name="message" placeholder="Öneriniz..." required></textarea>
+        <textarea name="suggestion" placeholder="Öneriniz..." required></textarea>
         <button type="submit">Gönder</button>
       </form>
 
@@ -137,50 +152,86 @@ body { background:#000; overflow:hidden; font-family:'Press Start 2P', cursive; 
 </div>
 
 <script>
-function toggleMenu() { document.getElementById("mobileMenu").classList.toggle("active"); }
+function toggleMenu() {
+  document.getElementById("mobileMenu").classList.toggle("active");
+}
 
-/* ================= SLIDE ARKA PLAN ================= */
+// Proper Case Fonksiyonu
+function properName(name) {
+  if(!name) return '';
+  return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+}
+
+// Formspree ile form gönderme ve alert
+const form = document.getElementById('suggestionForm');
+form.addEventListener('submit', async function(e){
+  e.preventDefault();
+  const formData = new FormData(form);
+  const nameProper = properName(formData.get('name'));
+  
+  // Formspree'ye gönder
+  const response = await fetch(form.action, {
+    method: form.method,
+    body: formData,
+    headers: { 'Accept': 'application/json' }
+  });
+
+  if(response.ok){
+    alert(`Teşekkürler, öneriniz bize ulaştı Sevgili ${nameProper} ✅`);
+    form.reset();
+  } else {
+    alert('Üzgünüz, bir hata oluştu. Lütfen tekrar deneyin.');
+  }
+});
+
+// Arkaplan slaytları
 const slides = [
-  { bg: "Mario_Duvar.jpg" },
-  { bg: "Harry_Duvar.jpg" },
-  { bg: "Shrek_Duvar.jpg" }
+  { bg: "Mario_Duvar.jpg", fg: "Mario.png" },
+  { bg: "Harry_Duvar.jpg", fg: "Harry.png" },
+  { bg: "Shrek_Duvar.jpg", fg: "Shrek.png" }
 ];
 
 const bg1 = document.getElementById("bg1");
 const bg2 = document.getElementById("bg2");
-let index = 0;
-let showA = true;
+const fg1 = document.getElementById("fg1");
+const fg2 = document.getElementById("fg2");
+
+let index = 0, showA = true;
 
 bg1.style.backgroundImage = `url('${slides[0].bg}')`;
+fg1.style.backgroundImage = `url('${slides[0].fg}')`;
 
-setInterval(() => {
-  index = (index + 1) % slides.length;
-  const bgA = showA ? bg1 : bg2;
-  const bgB = showA ? bg2 : bg1;
+requestAnimationFrame(()=>{
+  bg1.style.transform="scale(1)";
+  fg1.style.transform="scale(1.15)";
+});
 
-  bgB.style.transition = "none";
-  bgB.style.backgroundImage = `url('${slides[index].bg}')`;
-  bgB.style.opacity = "1";
-  bgB.offsetHeight; // trigger reflow
-  bgB.style.transition = "opacity 2s ease-in-out, transform 10s linear";
-  bgB.style.transform = "scale(1)";
-  bgA.style.opacity = "0";
+setInterval(()=>{
+  index=(index+1)%slides.length;
+  const bgA=showA?bg1:bg2;
+  const bgB=showA?bg2:bg1;
+  const fgA=showA?fg1:fg2;
+  const fgB=showA?fg2:fg1;
 
-  showA = !showA;
-}, 10000);
+  bgB.style.transition="none"; bgB.style.transform="scale(1.25)";
+  bgB.style.backgroundImage=`url('${slides[index].bg}')`; bgB.style.opacity="1";
+  bgB.offsetHeight;
+  bgB.style.transition="opacity 2s ease-in-out, transform 10s linear"; bgB.style.transform="scale(1)";
+  bgA.style.opacity="0";
 
-/* ================= TAB TITLE ================= */
-const titles = [
-  "✍️ Öneri Kutusu",
-  "👀 1 Mesajınız Var!",
-  "🎬 Filmlerle İngilizce",
-  "🧠 İngilizce Beynine Yerleşiyor…"
-];
-let titleIndex = 0;
-setInterval(() => {
-  document.title = titles[titleIndex];
-  titleIndex = (titleIndex + 1) % titles.length;
-}, 2500);
+  fgB.style.transition="none"; fgB.style.transform="scale(1)";
+  fgB.style.backgroundImage=`url('${slides[index].fg}')`; fgB.style.opacity="1";
+  fgB.offsetHeight;
+  fgB.style.transition="opacity 2s ease-in-out, transform 11s linear"; fgB.style.transform="scale(1.1)";
+  fgA.style.opacity="0";
+
+  showA=!showA;
+},10000);
+
+// Tab title animation
+const titles=["✍️ Öneri Kutusu","👀 1 Mesajınız Var!","🎬 Filmlerle İngilizce","🧠 İngilizce Beynine Yerleşiyor…"];
+let titleIndex=0;
+setInterval(()=>{ document.title=titles[titleIndex]; titleIndex=(titleIndex+1)%titles.length; },2500);
 </script>
 
 </body>
